@@ -1,0 +1,347 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>教务管理系统 - 管理员界面</title>
+    <link rel="stylesheet" href="../static/admin_styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+</head>
+<body>
+    <!-- 顶部导航栏 -->
+    <header class="top-header">
+        <div class="logo">
+            <h1>教务管理系统</h1>
+        </div>
+        <div class="user-info">
+            <span class="user-name">管理员：admin</span>
+            <img class="avatar" src="https://via.placeholder.com/36" alt="用户头像">
+        </div>
+    </header>
+
+    <!-- 主体内容 -->
+    <div class="main-container">
+        <!-- 左侧导航栏 -->
+        <aside class="sidebar">
+            <!-- 账号管理部分 -->
+            <div class="nav-section">
+                <h3 class="section-title"><i class="fas fa-user-cog"></i> 账号管理</h3>
+                <ul class="nav-items">
+                    <li class="nav-item active" id="student-account-link">
+                        <i class="fas fa-users"></i>
+                        <span>学生账号管理</span>
+                    </li>
+                    <li class="nav-item" id="teacher-account-link">
+                        <i class="fas fa-chalkboard-teacher"></i>
+                        <span>教师账号管理</span>
+                    </li>
+                    <li class="nav-item" id="admin-account-link">
+                        <i class="fas fa-user-shield"></i>
+                        <span>管理员账号</span>
+                    </li>
+                </ul>
+            </div>
+
+            <!-- 课程管理部分 -->
+            <div class="nav-section">
+                <h3 class="section-title"><i class="fas fa-book"></i> 课程管理</h3>
+                <ul class="nav-items">
+                    <li class="nav-item" id="course-list-link"><i class="fas fa-list-alt"></i> 课程列表</li>
+                    <li class="nav-item" id="add-course-btn"><i class="fas fa-plus-circle"></i> 添加课程</li>
+                    <li class="nav-item"><i class="fas fa-edit"></i> 编辑课程</li>
+                    <li class="nav-item"><i class="fas fa-calendar-alt"></i> 课程安排</li>
+                </ul>
+            </div>
+        </aside>
+
+        <!-- 右侧内容区域 -->
+        <main class="content">
+            <div class="content-header" id="student-account-header">
+                <h2>学生账号管理</h2>
+                <div class="actions">
+                    <button class="btn add-btn" id="add-student-btn"><i class="fas fa-plus"></i> 添加学生</button>
+                    <div class="search-container">
+                        <input type="text" placeholder="搜索学生账号..." class="search-input" id="search-student-input">
+                        <button class="btn search-btn" id="search-student-btn"><i class="fas fa-search"></i></button>
+                    </div>
+                </div>
+            </div>
+
+
+            <div class="content-header" id="teacher-account-header" style="display: none;">
+                <h2>教师账号管理</h2>
+                <div class="actions">
+                    <button class="btn add-btn" id="add-teacher-btn"><i class="fas fa-plus"></i> 添加教师</button>
+                    <div class="search-container">
+                        <input type="text" placeholder="搜索教师账号..." class="search-input" id="search-teacher-input">
+                        <button class="btn search-btn" id="search-teacher-btn"><i class="fas fa-search"></i></button>
+                    </div>
+                </div>
+            </div>
+
+
+            <div class="content-header" id="admin-account-header" style="display: none;">
+                <h2>管理员账号</h2>
+            </div>
+
+
+            <div class="content-header" id="course-list-header" style="display: none;">
+                <h2>课程列表</h2>
+            </div>
+
+
+
+            <div class="data-table-container" id="student-account-management">
+                <h3>学生账号管理</h3>
+                <table class="data-table">
+                    <thead>
+                        <tr>
+                            <th>学号</th>
+                            <th>姓名</th>
+                            <th>性别</th>
+                            <th>班级</th>
+                            <th>专业</th>
+                            <th>入学年份</th>
+                            <th>操作</th>
+                        </tr>
+                    </thead>
+                    <tbody id="studentTableBody">
+                    <!-- 动态填充数据 -->
+                    </tbody>
+
+                </table>
+            </div>
+
+            <div class="data-table-container" id="teacher-account-management" style="display: none;">
+                <h3>教师账号管理</h3>
+                <table class="data-table">
+                    <thead>
+                        <tr>
+                            <th>工号</th>
+                            <th>姓名</th>
+                            <th>性别</th>
+                            <th>学院</th>
+                            <th>职称</th>
+                            <th>操作</th>
+                        </tr>
+                    </thead>
+                    <tbody id="teacherTableBody">
+                    <!-- 动态填充数据 -->
+                    </tbody>
+
+                </table>
+            </div>
+
+            <div class="data-table-container" id="admin-account-management" style="display: none;">
+                <form class="form-container">
+                    <div>
+                        <label class="form-label" for="admin-username">用户名</label>
+                        <input type="text" id="admin-username" name="admin-username" value="admin" class="form-input readonly" readonly>
+                    </div>
+                    <div>
+                        <label class="form-label" for="current-password">当前密码</label>
+                        <input type="password" id="current-password" name="current-password" class="form-input" required>
+                    </div>
+                    <div>
+                        <label class="form-label" for="new-password">新密码</label>
+                        <input type="password" id="new-password" name="new-password" class="form-input" required>
+                    </div>
+                    <div>
+                        <label class="form-label" for="confirm-password">确认新密码</label>
+                        <input type="password" id="confirm-password" name="confirm-password" class="form-input" required>
+                    </div>
+                </form>
+                <div class="form-actions">
+                    <button type="button" class="btn" id="change-password-btn">更改密码</button>
+                </div>
+            </div>
+
+
+
+            <div class="data-table-container" id="course-list-management" style="display: none;">
+                <h3>课程列表</h3>
+                <table class="data-table">
+                    <thead>
+                        <tr>
+                            <th>课程编号</th>
+                            <th>课程名称</th>
+                            <th>学分</th>
+                            <th>授课教师ID</th>
+                            <th>课程容量</th>
+                            <th>操作</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                    <!-- 动态填充课程数据 -->
+                    </tbody>
+                </table>
+            </div>
+
+
+
+
+            <div class="pagination">
+                <button class="pagination-btn"><i class="fas fa-angle-double-left"></i></button>
+                <button class="pagination-btn"><i class="fas fa-angle-left"></i></button>
+                <button class="pagination-btn active">1</button>
+                <button class="pagination-btn">2</button>
+                <button class="pagination-btn">3</button>
+                <button class="pagination-btn"><i class="fas fa-angle-right"></i></button>
+                <button class="pagination-btn"><i class="fas fa-angle-double-right"></i></button>
+            </div>
+
+
+
+
+
+
+            <!-- 添加学生模态框 -->
+            <div class="modal" id="add-student-modal">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h3>添加学生</h3>
+                        <span class="close-btn" id="close-student-modal">&times;</span>
+                    </div>
+                    <div class="modal-body">
+                        <form id="add-student-form">
+                            <div>
+                                <label for="student-id">学号</label>
+                                <input type="text" id="student-id" name="student_id" required>
+                            </div>
+                            <div>
+                                <label for="student-name">姓名</label>
+                                <input type="text" id="student-name" name="name" required>
+                            </div>
+                            <div>
+                                <label for="student-gender">性别</label>
+                                <select id="student-gender" name="gender" required>
+                                    <option value="男">男</option>
+                                    <option value="女">女</option>
+                                </select>
+                            </div>
+                            <div>
+                                <label for="enrollment-year">入学年份</label>
+                                <input type="text" id="enrollment-year" name="enrollment_year" required>
+                            </div>
+                            <div>
+                                <label for="student-major">专业</label>
+                                <input type="text" id="student-major" name="major" required>
+                            </div>
+                            <div>
+                                <label for="student-password">密码</label>
+                                <input type="password" id="student-password" name="password" required>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn cancel-btn" id="cancel-student-btn">取消</button>
+                                <button type="submit" class="btn confirm-btn">提交</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+
+
+
+
+            <!-- 添加教师模态框 -->
+            <div class="modal" id="add-teacher-modal">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h3>添加教师</h3>
+                        <span class="close-btn" id="close-teacher-modal">&times;</span>
+                    </div>
+                    <div class="modal-body">
+                        <form id="add-teacher-form">
+                            <div>
+                                <label for="teacher-id">教师编号</label>
+                                <input type="text" id="teacher-id" name="teacher_id" required>
+                            </div>
+                            <div>
+                                <label for="teacher-name">姓名</label>
+                                <input type="text" id="teacher-name" name="name" required>
+                            </div>
+                            <div>
+                                <label for="teacher-gender">性别</label>
+                                <select id="teacher-gender" name="gender" required>
+                                    <option value="男">男</option>
+                                    <option value="女">女</option>
+                                </select>
+                            </div>
+                            <div>
+                                <label for="teacher-title">职称</label>
+                                <input type="text" id="teacher-title" name="title" required>
+                            </div>
+                            <div>
+                                <label for="teacher-department">学院</label>
+                                <input type="text" id="teacher-department" name="department" required>
+                            </div>
+                            <div>
+                                <label for="teacher-password">密码</label>
+                                <input type="password" id="teacher-password" name="password" required>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn cancel-btn" id="cancel-teacher-btn">取消</button>
+                                <button type="submit" class="btn confirm-btn">提交</button>
+                            </div>
+                        </form>
+
+                    </div>
+                </div>
+            </div>
+
+
+
+            <!-- 添加课程模态框 -->
+            <div class="modal" id="add-course-modal">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h3>添加课程</h3>
+                        <span class="close-btn" id="close-course-modal">&times;</span>
+                    </div>
+                    <div class="modal-body">
+                        <form id="add-course-form">
+                            <div>
+                                <label for="course-id">课程编号</label>
+                                <input type="text" id="course-id" name="course_id" required>
+                            </div>
+                            <div>
+                                <label for="course-name">课程名称</label>
+                                <input type="text" id="course-name" name="name" required>
+                            </div>
+                            <div>
+                                <label for="course-credit">学分</label>
+                                <input type="number" id="course-credit" name="credit" required>
+                            </div>
+                            <div>
+                                <label for="teacher-id">授课教师ID</label>
+                                <input type="text" id="teacher-id" name="teacher_id" required>
+                            </div>
+                            <div>
+                                <label for="course-capacity">课程容量</label>
+                                <input type="number" id="course-capacity" name="capacity" required>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn cancel-btn" id="cancel-course-btn">取消</button>
+                                <button type="submit" class="btn confirm-btn">提交</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+
+
+
+
+
+
+
+
+
+
+        </main>
+    </div>
+
+
+    <script src="../static/admin_Script.js"></script>
+</body>
+</html>

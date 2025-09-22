@@ -1,0 +1,417 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>教务管理系统 - 学生界面</title>
+
+    <link rel="stylesheet" href="../static/student.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+</head>
+<body>
+<!-- 顶部导航栏 -->
+<header class="top-header">
+    <div class="logo">
+        <h1>教务管理系统</h1>
+    </div>
+    <div class="user-info">
+        <span class="user-name">学生：{{ student_name }}</span>
+        <img class="avatar" src="https://via.placeholder.com/36" alt="用户头像">
+    </div>
+</header>
+
+<!-- 主体内容 -->
+<div class="main-container">
+    <!-- 左侧导航栏 -->
+    <aside class="sidebar">
+        <!-- 学生选课部分 -->
+        <div class="nav-section">
+            <h3 class="section-title"><i class="fas fa-book-open"></i> 学生选课</h3>
+            <ul class="nav-items">
+                <li class="nav-item active" data-content="available-courses"><i class="fas fa-list-ul"></i> 可选课程
+                </li>
+                <li class="nav-item" data-content="selected-courses"><i class="fas fa-check-circle"></i> 已选课程</li>
+            </ul>
+        </div>
+
+        <!-- 成绩管理部分 -->
+        <div class="nav-section">
+            <h3 class="section-title"><i class="fas fa-chart-line"></i> 成绩管理</h3>
+            <ul class="nav-items">
+                <li class="nav-item" data-content="gpa-statistics"><i class="fas fa-calculator"></i> GPA统计</li>
+                <li class="nav-item" data-content="transcript-printing"><i class="fas fa-award"></i> 成绩单打印</li>
+            </ul>
+        </div>
+
+        <!-- 个人中心部分 -->
+        <div class="nav-section">
+            <h3 class="section-title"><i class="fas fa-user"></i> 个人中心</h3>
+            <ul class="nav-items">
+                <li class="nav-item" data-content="personal-info"><i class="fas fa-id-card"></i> 个人信息</li>
+                <li class="nav-item" data-content="change-password"><i class="fas fa-key"></i> 密码修改</li>
+            </ul>
+        </div>
+    </aside>
+
+    <!-- 右侧内容区域 -->
+    <main class="content">
+        <div id="available-courses" class="content-section">
+            <div class="content-header">
+                <h2>可选课程</h2>
+                <div class="actions">
+                    <div class="search-container">
+                        <input type="text" placeholder="搜索课程..." class="search-input">
+                        <button class="btn search-btn"><i class="fas fa-search"></i></button>
+                    </div>
+                    <select class="filter-select">
+                        <option value="all">全部课程</option>
+                        <option value="required">必修课程</option>
+                        <option value="elective">选修课程</option>
+                        <option value="public">公共课程</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="filter-tags">
+                <span class="filter-tag active">全部<i class="fas fa-times"></i></span>
+                <span class="filter-tag">计算机科学<i class="fas fa-times"></i></span>
+                <span class="filter-tag">周一<i class="fas fa-times"></i></span>
+                <span class="filter-tag">上午<i class="fas fa-times"></i></span>
+            </div>
+
+            <div class="data-table-container">
+                <table class="data-table">
+                    <thead>
+                    <tr>
+                        <th>课程编号</th>
+                        <th>课程名称</th>
+                        <th>授课教师</th>
+                        <th>学分</th>
+                        <th>剩余名额</th>
+                        <th>操作</th>
+                    </tr>
+                    </thead>
+                    <tbody id="courseTableBody">
+                    <!-- 这里的数据将由 JavaScript 动态填充 -->
+                    </tbody>
+
+                </table>
+            </div>
+
+            <div class="pagination">
+                <button class="pagination-btn"><i class="fas fa-angle-double-left"></i></button>
+                <button class="pagination-btn"><i class="fas fa-angle-left"></i></button>
+                <button class="pagination-btn active">1</button>
+                <button class="pagination-btn">2</button>
+                <button class="pagination-btn">3</button>
+                <button class="pagination-btn"><i class="fas fa-angle-right"></i></button>
+                <button class="pagination-btn"><i class="fas fa-angle-double-right"></i></button>
+            </div>
+        </div>
+
+        <!-- Add more content sections here for other navigation items -->
+<div id="selected-courses" class="content-section" style="display: none;">
+    <!-- Add content for selected courses here -->
+    <div class="content-header">
+        <h2>已选课程</h2>
+        <div class="actions">
+            <div class="search-container">
+                <input type="text" placeholder="搜索课程..." class="search-input">
+                <button class="btn search-btn"><i class="fas fa-search"></i></button>
+            </div>
+            <select class="filter-select">
+                <option value="all">全部课程</option>
+                <option value="required">必修课程</option>
+                <option value="elective">选修课程</option>
+                <option value="public">公共课程</option>
+            </select>
+        </div>
+    </div>
+
+    <div class="filter-tags">
+        <span class="filter-tag active">全部<i class="fas fa-times"></i></span>
+        <span class="filter-tag">计算机科学<i class="fas fa-times"></i></span>
+        <span class="filter-tag">周一<i class="fas fa-times"></i></span>
+        <span class="filter-tag">上午<i class="fas fa-times"></i></span>
+    </div>
+
+    <div class="data-table-container">
+        <table class="data-table">
+            <thead>
+                <tr>
+                    <th>课程编号</th>
+                    <th>课程名称</th>
+                    <th>授课教师</th>
+                    <th>学分</th>
+                    <th>操作</th>
+                </tr>
+            </thead>
+            <tbody id="selectedCourseTableBody">
+            <!-- 这里的数据将由 JavaScript 动态填充 -->
+            </tbody>
+        </table>
+    </div>
+
+    <div class="pagination">
+        <button class="pagination-btn"><i class="fas fa-angle-double-left"></i></button>
+        <button class="pagination-btn"><i class="fas fa-angle-left"></i></button>
+        <button class="pagination-btn active">1</button>
+        <button class="pagination-btn">2</button>
+        <button class="pagination-btn">3</button>
+        <button class="pagination-btn"><i class="fas fa-angle-right"></i></button>
+        <button class="pagination-btn"><i class="fas fa-angle-double-right"></i></button>
+    </div>
+</div>
+
+
+
+        <div id="semester-grades" class="content-section" style="display: none;">
+            <!-- Add content for semester grades here -->
+            <div class="content-header">
+                <h2>学期成绩</h2>
+                <div class="actions">
+                    <div class="search-container">
+                        <input type="text" placeholder="搜索课程..." class="search-input">
+                        <button class="btn search-btn"><i class="fas fa-search"></i></button>
+                    </div>
+                    <select class="filter-select">
+                        <option value="all">全部学期</option>
+                        <option value="required">大一上</option>
+                        <option value="elective">大一下</option>
+                        <option value="public">大二上</option>
+                        <option value="public">大二下</option>
+                        <option value="public">大三上</option>
+                        <option value="public">大三下</option>
+                        <option value="public">大四上</option>
+                        <option value="public">大四下</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="data-table-container">
+                <table class="data-table">
+                    <thead>
+                    <tr>
+                        <th>总成绩</th>
+                        <th>课程编号</th>
+                        <th>课程名称</th>
+                        <th>学分</th>
+                        <th>课程类型</th>
+                        <th>绩点</th>
+                        <th>修读学期</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr>
+                        <td>90.0</td>
+                        <td>CS101</td>
+                        <td>计算机导论</td>
+                        <td>3</td>
+                        <td>必修</td>
+                        <td>4.0</td>
+                        <td>大一上</td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <div id="gpa-statistics" class="content-section" style="display: none;">
+            <!-- GPA data will be populated here -->
+            <div class="content-header">
+                <h2>GPA统计</h2>
+                <div class="actions">
+                    <select class="filter-select" id="Gpa_year-select">
+                        <option value="all">全部学期</option>
+                        <option value="year1">第一学年</option>
+                        <option value="year2">第二学年</option>
+                        <option value="year3">第三学年</option>
+                        <option value="year4">第四学年</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="data-table-container">
+                <table class="data-table">
+                    <thead>
+                    <tr>
+                        <th>时间段</th>
+                        <th>GPA</th>
+                    </tr>
+                    </thead>
+                    <tbody id="gpa-table-body">
+                    </tbody>
+                </table>
+            </div>
+
+        </div>
+
+
+        <div id="transcript-printing" class="content-section" style="display: none;">
+            <!-- Add content for transcript printing here -->
+            <div class="content-header">
+                <h2>成绩单打印</h2>
+                <div class="actions">
+                    <button class="btn print-btn">打印成绩单</button>
+                </div>
+                <div class="actions">
+                    <div class="search-container">
+                        <input type="text" placeholder="搜索课程..." class="search-input">
+                        <button class="btn search-btn"><i class="fas fa-search"></i></button>
+                    </div>
+                    <select class="filter-select">
+                        <option value="all">全部学期</option>
+                        <option value="required">大一上</option>
+                        <option value="elective">大一下</option>
+                        <option value="public">大二上</option>
+                        <option value="public">大二下</option>
+                        <option value="public">大三上</option>
+                        <option value="public">大三下</option>
+                        <option value="public">大四上</option>
+                        <option value="public">大四下</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="data-table-container">
+                <table class="data-table">
+                    <thead>
+                    <tr>
+                        <th>总成绩</th>
+                        <th>课程编号</th>
+                        <th>课程名称</th>
+                        <th>学分</th>
+                        <th>课程类型</th>
+                        <th>绩点</th>
+                        <th>修读学期</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr>
+                        <td>90.0</td>
+                        <td>CS101</td>
+                        <td>计算机导论</td>
+                        <td>3</td>
+                        <td>必修</td>
+                        <td>4.0</td>
+                        <td>大一上</td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+
+        <div id="credit-status" class="content-section" style="display: none;">
+            <!-- Add content for credit status here -->
+            <div class="content-header">
+                <h2>学分情况</h2>
+                <div class="actions">
+                    <select class="filter-select" id="credit_year-select">
+                        <option value="all">全部学期</option>
+                        <option value="year1">第一学年</option>
+                        <option value="year2">第二学年</option>
+                        <option value="year3">第三学年</option>
+                        <option value="year4">第四学年</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="data-table-container">
+                <table class="data-table">
+                    <thead>
+                    <tr>
+                        <th>时间段</th>
+                        <th>学分</th>
+                    </tr>
+                    </thead>
+                    <tbody id="credit-table-body">
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+
+        <div id="personal-info" class="content-section" style="display: none;">
+            <!-- Add content for personal info here -->
+            <h2>个人信息</h2>
+            <form class="form-container">
+                <!-- 姓名：只读 -->
+                <div>
+                    <label class="form-label" for="username">姓名</label>
+                    <input type="text" id="username" name="username" value="石彩霞" class="form-input readonly"
+                           required>
+                </div>
+
+                <!-- 学号：只读 -->
+                <div>
+                    <label class="form-label" for="account">学号</label>
+                    <input type="text" id="account" name="account" value="21221205" class="form-input readonly"
+                           required>
+                </div>
+
+                <!-- 性别：只读 -->
+                <div>
+                    <label class="form-label" for="gender">性别</label>
+                    <input type="text" id="gender" name="gender" value="女" class="form-input readonly" required>
+                </div>
+
+                <!-- 学院：只读 -->
+                <div>
+                    <label class="form-label" for="gender">学院</label>
+                    <input type="text" id="college" name="college" value="计算机科学与技术学院"
+                           class="form-input readonly" required>
+                </div>
+
+                <!-- 邮箱 -->
+                <div>
+                    <label class="form-label" for="email">邮箱</label>
+                    <input type="email" id="email" name="email" value="2061638445@qq.com" class="form-input" required>
+                </div>
+
+                <!-- 手机 -->
+                <div>
+                    <label class="form-label" for="phone">手机</label>
+                    <input type="tel" id="phone" name="phone" value="18514352478" class="form-input" required>
+                </div>
+
+            </form>
+        </div>
+
+
+        <div id="change-password" class="content-section" style="display: none;">
+            <!-- Add content for change password here -->
+            <h2>密码修改</h2>
+            <form class="form-container" id="change-password-form">
+                <!-- 当前密码 -->
+                <div>
+                    <label class="form-label" for="current-password">当前密码</label>
+                    <input type="password" id="current-password" name="current-password" class="form-input" required>
+                </div>
+
+                <!-- 新密码 -->
+                <div>
+                    <label class="form-label" for="new-password">新密码</label>
+                    <input type="password" id="new-password" name="new-password" class="form-input" required>
+                </div>
+
+                <!-- 确认新密码 -->
+                <div>
+                    <label class="form-label" for="confirm-password">确认新密码</label>
+                    <input type="password" id="confirm-password" name="confirm-password" class="form-input" required>
+                </div>
+
+                <!-- 错误信息提示 -->
+                <div id="error-message" style="color: red; display: none;">新密码和确认新密码不匹配</div>
+
+                <!-- 提交按钮 -->
+                <button type="submit" class="btn">提交</button>
+            </form>
+        </div>
+    </main>
+</div>
+
+<script src="../static/student_script.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</body>
+</html>

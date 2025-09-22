@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>教务管理系统 - 教师界面</title>
+    <link rel="stylesheet" href="../static/teacher.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <style>
+        .notification-container {
+            padding: 20px;
+            background-color: #f9f9f9;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+        .notification-item {
+            margin-bottom: 20px;
+            padding: 15px;
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+        .notification-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid #eee;
+            padding-bottom: 10px;
+            margin-bottom: 10px;
+        }
+        .notification-header h3 {
+            margin: 0;
+            font-size: 18px;
+            color: #333;
+        }
+        .notification-date {
+            font-size: 14px;
+            color: #999;
+        }
+        .notification-body {
+            font-size: 16px;
+            color: #555;
+        }
+        .content-header .actions {
+            display: flex;
+            align-items: center;
+        }
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            padding: 8px 12px;
+            background-color: #007bff;
+            color: #fff;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        .btn i {
+            margin-right: 5px;
+        }
+        .btn:hover {
+            background-color: #0056b3;
+        }
+        .new-notification-btn {
+            margin-left: auto;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- 顶部导航栏 -->
+    <header class="top-header">
+        <div class="logo">
+            <h1>教务管理系统</h1>
+        </div>
+        <div class="user-info">
+            <span class="user-name">教师：{{ teacher_name }}</span>
+            <img class="avatar" src="https://via.placeholder.com/36" alt="用户头像">
+        </div>
+    </header>
+
+    <!-- 主体内容 -->
+    <div class="main-container">
+        <!-- 左侧导航栏 -->
+        <aside class="sidebar">
+            <!-- 我的课程部分 -->
+            <div class="nav-section">
+                <ul class="nav-items">
+                    <li class="nav-item active" id="course-list-link"><i class="fas fa-list-alt"></i> 课程列表</li>
+                </ul>
+            </div>
+
+            <!-- 其他功能部分 -->
+            <div class="nav-section">
+                <h3 class="section-title"><i class="fas fa-cogs"></i> 其他功能</h3>
+                <ul class="nav-items">
+                    <li class="nav-item" id="course-schedule-link"><i class="fas fa-calendar-alt"></i> 课程安排</li>
+                    <li class="nav-item" id="grade-statistics-link"><i class="fas fa-chart-bar"></i> 成绩统计</li>
+                    <li class="nav-item" id="notification-management-link"><i class="fas fa-envelope"></i> 通知管理</li>
+                </ul>
+            </div>
+        </aside>
+
+        <!-- 右侧内容区域 -->
+        <main class="content">
+            <!-- 课程列表 -->
+            <div id="course-list" class="content-section">
+                <div class="content-header">
+                    <h2>课程列表</h2>
+                    <div class="actions">
+                        <div class="search-container">
+                            <input type="text" placeholder="搜索课程..." class="search-input">
+                            <button class="btn search-btn"><i class="fas fa-search"></i></button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="data-table-container">
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th>课程编号</th>
+                                <th>课程名称</th>
+                                <th>操作</th>
+                            </tr>
+                        </thead>
+                        <tbody id="course-list-body">
+                            <!-- 课程数据将通过JavaScript动态填充 -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- 学生名单 -->
+            <div id="student-list" class="content-section" style="display: none;">
+                <div class="content-header">
+                    <h2>学生名单</h2>
+                    <div class="actions">
+                        <button class="btn back-btn" id="back-to-courses-btn"><i class="fas fa-arrow-left"></i> 返回课程列表</button>
+                        <button class="btn sort-grade-btn" id="sort-by-grade-btn"><i class="fas fa-sort-numeric-down"></i> 按成绩排序</button>
+                    </div>
+                </div>
+
+                <div class="data-table-container">
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th>学号</th>
+                                <th>姓名</th>
+                                <th>成绩</th>
+                                <th>操作</th>
+                            </tr>
+                        </thead>
+                        <tbody id="student-list-body">
+                            <!-- 学生数据将通过JavaScript动态填充 -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- 课程安排 -->
+            <div id="course-schedule" class="content-section" style="display: none;">
+                <div class="content-header">
+                    <h2>课程安排</h2>
+                </div>
+
+                <div class="data-table-container">
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th>课程编号</th>
+                                <th>课程名称</th>
+                                <th>授课教师</th>
+                            </tr>
+                        </thead>
+                        <tbody id="course-schedule-body">
+                            <!-- 课程安排数据将通过JavaScript动态填充 -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- 通知管理 -->
+            <div id="notification-management" class="content-section" style="display: none;">
+                <div class="content-header">
+                    <h2>通知管理</h2>
+                    <div class="actions">
+                        <button class="btn new-notification-btn" id="new-notification-btn"><i class="fas fa-plus"></i> 新建通知</button>
+                    </div>
+                </div>
+
+                <div class="notification-container">
+                    <!-- 通知列表 -->
+                    <div class="notification-list">
+                        <div class="notification-item">
+                            <div class="notification-header">
+                                <h3>期中考试安排通知</h3>
+                                <span class="notification-date">2025-03-10</span>
+                            </div>
+                            <div class="notification-body">
+                                各位同学，请注意，期中考试将于2025年4月1日至4月5日举行，请提前做好复习准备。
+                            </div>
+                        </div>
+                        <div class="notification-item">
+                            <div class="notification-header">
+                                <h3>课程调整通知</h3>
+                                <span class="notification-date">2025-03-15</span>
+                            </div>
+                            <div class="notification-body">
+                                下周一的《高等数学》课程将调整至周三上午8点至10点，请相互转告。
+                            </div>
+                        </div>
+                        <div class="notification-item">
+                            <div class="notification-header">
+                                <h3>学术讲座通知</h3>
+                                <span class="notification-date">2025-03-18</span>
+                            </div>
+                            <div class="notification-body">
+                                本周五下午3点将在学术报告厅举行关于人工智能最新发展的学术讲座，欢迎大家参加。
+                            </div>
+                        </div>
+                        <!-- 更多通知项可以添加在这里 -->
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script src="../static/teacher_script.js"></script>
+</body>
+</html>

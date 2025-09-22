@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="renderer" content="webkit">
+    <title>选课系统</title>
+    <style>
+        html, body {
+            height: 100%;
+            margin: 0;
+            padding: 0;
+            overflow: hidden; /* 防止滚动条出现 */
+        }
+        a { color: #09f; }
+        a:hover { text-decoration: none; }
+
+        /* 背景样式 */
+        .bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: url('../static/login.jpg'); /* 背景图片 */
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            opacity: 0.85; /* 背景透明度 */
+            z-index: -1;
+        }
+
+        /* 登录框样式 */
+        .login_container {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: rgba(255, 255, 255, 0.9); /* 半透明背景 */
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+            width: 400px; /* 登录框宽度 */
+            z-index: 1;
+        }
+
+        /* 登录选项卡样式 */
+        .login_box_tab {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 20px;
+        }
+
+        .login_box_tab a {
+            color: #09f;
+            text-align: center;
+            width: 100%;
+            text-decoration: none;
+            padding: 10px 0;
+            cursor: pointer;
+        }
+
+        .login_box_tab .active {
+            color: blue;
+            border-bottom: 2px solid blue;
+        }
+
+        /* 输入框样式 */
+        .login_box_input {
+            width: calc(100% - 22px);
+            padding: 10px;
+            margin-bottom: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+
+        /* 登录按钮样式 */
+        .login_box_landing_btn {
+            background-color: blue; /* 蓝色背景 */
+            color: white; /* 白色文字 */
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            width: 100%;
+        }
+
+        .login_box_landing_btn:hover {
+            background-color: darkblue; /* 鼠标悬停时变深 */
+        }
+    </style>
+</head>
+<body>
+    <!-- 背景 -->
+    <div class="bg"></div>
+
+    <!-- 登录表单 -->
+    <form id="loginForm">
+        <div class="login_container" id="login_container_box">
+            <!-- 登录选项 -->
+            <div class="login_box_tab">
+                <a class="tab-inside-first active" id="manager_login" onclick="switchLogin('admin')">管理员登录</a>
+                <a class="tab-inside" id="teacher_login" onclick="switchLogin('teacher')">老师登录</a>
+                <a class="tab-inside" id="student_login" onclick="switchLogin('student')">学生登录</a>
+            </div>
+
+            <!-- 动态登录内容 -->
+            <div id="login_content">
+                <input type="text" class="login_box_input" id="un" placeholder="用户名" required>
+                <input type="password" class="login_box_input" id="pd" placeholder="密码" required>
+                <input type="hidden" id="role" value="admin">  <!-- 默认角色是管理员 -->
+                <input type="button" class="login_box_landing_btn" value="立即登录" onclick="submitLogin()">
+            </div>
+        </div>
+    </form>
+
+    <script type="text/javascript">
+        // 切换登录选项
+        function switchLogin(type) {
+            const un = document.getElementById('un');
+            const pd = document.getElementById('pd');
+            const roleInput = document.getElementById('role'); // 角色隐藏字段
+
+            const tabs = document.querySelectorAll('.login_box_tab a');
+            tabs.forEach(tab => tab.classList.remove('active'));
+
+            switch (type) {
+                case 'admin':
+                    un.placeholder = '管理员账号';
+                    pd.placeholder = '管理员密码';
+                    roleInput.value = 'admin';  // 设置角色
+                    document.getElementById('manager_login').classList.add('active');
+                    break;
+                case 'teacher':
+                    un.placeholder = '教师工号';
+                    pd.placeholder = '教师密码';
+                    roleInput.value = 'teacher';  // 设置角色
+                    document.getElementById('teacher_login').classList.add('active');
+                    break;
+                case 'student':
+                    un.placeholder = '学号';
+                    pd.placeholder = '学生密码';
+                    roleInput.value = 'student';  // 设置角色
+                    document.getElementById('student_login').classList.add('active');
+                    break;
+            }
+        }
+
+        // 提交登录
+        function submitLogin() {
+            const username = document.getElementById('un').value;
+            const password = document.getElementById('pd').value;
+            const role = document.getElementById('role').value; // 获取角色
+
+            if (!username || !password) {
+                alert('用户名或密码不能为空！');
+                return;
+            }
+
+            fetch("/login", {
+                method: "POST",
+                headers: { "Content-Type": "application/x-www-form-urlencoded" },
+                body: `username=${encodeURIComponent(username)}&password=${encodeURIComponent(password)}&role=${encodeURIComponent(role)}`
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    // 登录成功，跳转到对应页面
+                    window.location.href = data.redirect_url;
+                } else {
+                    // 登录失败，清空输入框
+                    document.getElementById('un').value = "";
+                    document.getElementById('pd').value = "";
+                    alert("登录失败，用户名或密码错误");
+                }
+            })
+            .catch(error => console.error("登录请求失败:", error));
+        }
+
+        // 默认加载管理员登录
+        switchLogin('admin');
+    </script>
+</body>
+</html>
