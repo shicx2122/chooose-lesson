@@ -2,9 +2,9 @@ import MySQLdb
 
 def get_db_connection():
     return MySQLdb.connect(
-        host="localhost",
+        host="mysql.railway.internal",
         user="root",
-        passwd="120912",#L密码
-        db="database",
+        passwd="yRlzTBHrKdPYsZVrbTgqLIbWBNyTSJNL",#L密码
+        db="railway",
         charset="utf8"
     )
