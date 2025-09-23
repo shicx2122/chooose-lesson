@@ -42,7 +42,7 @@ def login():
 
     if role == "admin":
         # 管理员账号固定为 1，密码 000000
-        if username == "1" and password == "000000":
+        if username == "1" and password == "256":
             user = {"admin_id": 1, "name": "管理员"}
     elif role == "student":
         cursor.execute("SELECT * FROM Student WHERE student_id=%s AND password=%s", (username, password))
